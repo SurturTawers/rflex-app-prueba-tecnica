@@ -1,0 +1,20 @@
+.app-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.app-title {
+    flex: 1;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+.rflex-logo {
+    width: 10rem;
+    height: 5rem;
+}
