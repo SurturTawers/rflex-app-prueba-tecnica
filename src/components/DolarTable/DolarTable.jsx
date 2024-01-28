@@ -41,6 +41,11 @@ function DolarTable(){
         dispatch(modifyTableCell({itemId: selectedId, newValue: newValor}));
     }
 
+    const handleDeleteRecord = () => {
+        dispatch(deleteTableCell(selectedId));
+        setOpenSnack();
+    }
+
     const handleSnackClose = () => {
         setOpenSnack(false);
     }
@@ -49,7 +54,7 @@ function DolarTable(){
         <Fragment >
             <Box>
                 <Button variant='contained' onClick={() => setSnackEditMode(true)} >Editar</Button>
-                <Button variant='contained' onClick={() => dispatch(deleteTableCell(selectedId))} color="error" >Eliminar</Button>
+                <Button variant='contained' onClick={handleDeleteRecord} color="error" >Eliminar</Button>
             </Box>
             <Box>
                 <IconButton
