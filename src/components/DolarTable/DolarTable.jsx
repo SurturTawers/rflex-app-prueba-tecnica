@@ -8,8 +8,10 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
+import {useSelector} from "react-redux";
 
-function DolarTable({data}){
+function DolarTable(){
+    const data = useSelector((state) => state.dateFormatter.data.table_values);
     return (
         <Box sx={{marginLeft: '2rem', height: 700}}>
             <TableContainer component={Paper} sx={{maxHeight: 700, overflowX: 'hidden'}}>
@@ -22,25 +24,16 @@ function DolarTable({data}){
                     </TableHead>
                     <TableBody>
                             {
-                                data.map((item) => {
+                                data ? data.map((item) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1}>
-                                            <TableCell>{item.fecha}</TableCell>
+                                        <TableRow key={item.id} hover role="checkbox" tabIndex={-1}>
+                                            <TableCell>{item.formatted_date}</TableCell>
                                             <TableCell>{item.valor}</TableCell>
                                         </TableRow>
                                     )
                                 })
+                                    : null
                             }
-                            {
-                        data.map((item) => {
-                            return (
-                                <TableRow>
-                                    <TableCell>{item.fecha}</TableCell>
-                                    <TableCell>{item.valor}</TableCell>
-                                </TableRow>
-                            )
-                        })
-                    }
                     </TableBody>
                 </Table>
             </TableContainer>

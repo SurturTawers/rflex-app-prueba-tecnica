@@ -3,55 +3,64 @@ import DolarTable from "../DolarTable/DolarTable.jsx";
 import {Container} from "@mui/material";
 import SearchBar from "../SearchBar/SearchBar.jsx";
 import './Dashboard.css';
+import {useEffect, useState} from "react";
+import {getDolarValues} from "../../services/getDolarValues.js";
+import {getDolarAvailableDates} from "../../services/getDolarAvailableDates.js";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    formatter,
+    validInitialFromToDates,
+    valuesDateFormatter
+} from "../../features/dateFormatter/dateFormatterSlice.js";
+
 
 function Dashboard(){
+    //const [fechasBusqueda, setFechasBusqueda] = useState({fecha_desde:fecha_desde,fecha_hasta:fecha_hasta});
+    const [fechasBusquedaError, setFechasBusquedaError] = useState(false);
 
+    const fechas = useSelector((state) => state.dateFormatter.data.search_dates);
+    const dispatch = useDispatch();
 
-    const data = [
-        {
-            fecha: "2023-10-11",
-            valor: 895.4
-        },
-        {
-            fecha: "2023-10-12",
-            valor: 896.4
-        },
-        {
-            fecha: "2023-10-13",
-            valor: 890.4
-        },
-        {
-            fecha: "2023-10-14",
-            valor: 995.4
-        },
-        {
-            fecha: "2023-10-15",
-            valor: 975.4
-        },
-        {
-            fecha: "2023-10-16",
-            valor: 895.4
-        },
-        {
-            fecha: "2023-10-17",
-            valor: 805.4
-        },
-        {
-            fecha: "2023-10-18",
-            valor: 755.4
-        },
-        {
-            fecha: "2023-10-19",
-            valor: 865.4
-        },
-    ];
+    useEffect(() => {
+        getFechasDolar();
+        getValoresDolar();
+    },[]);
+
+    const handleSubmitFechas = (desde,hasta) => {
+        const from = new Date(desde);
+        const to = new Date(hasta);
+        if(from>=to){
+            setFechasBusquedaError(true);
+            alert("ERROR FECHAS");
+        }else{
+            alert("FECHAS CORRECTAS");
+
+        }
+        console.log(desde,hasta);
+    }
+
+    const getFechasDolar = async () => {
+        const data = await getDolarAvailableDates();
+        dispatch(formatter(data));
+        //setFechas(data);
+    }
+
+    const getValoresDolar = async () =>{
+        const data =  await getDolarValues(fechas.desde, fechas.hasta);
+        dispatch(valuesDateFormatter(data));
+        dispatch(validInitialFromToDates());
+        //setValoresDolar(data);
+    }
 
     return (
         <Container maxWidth={false} sx={{display: 'block'}}>
-            <SearchBar data={data} />
-            <Container maxWidth={false} sx={{ marginLeft: 0, marginRight: 0, display: 'flex', flexDirection: 'row', marginTop: '2rem'}} >
-                <DolarGraph data={data} />
-                <DolarTable data={data} />
+            <SearchBar handleSubmitFechas={handleSubmitFechas} />
+            <Container
+                maxWidth={false}
+                sx={{ marginLeft: 0, marginRight: 0, display: 'flex', flexDirection: 'row', marginTop: '2rem'}}
+            >
+                    <DolarGraph />
+                    <DolarTable />
             </Container>
         </Container>
     )

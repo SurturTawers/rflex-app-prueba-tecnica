@@ -1,5 +1,6 @@
-const api_prefix = 'http://localhost:8000/api/'//process.env.API_URL;
+const api_prefix = 'http://127.0.0.1:8000/api/'//process.env.API_URL;
 export const endpoints = {
-    getValues: api_prefix+'dolar',
+    getDolarValues: api_prefix+'currencies/dolar',
+    getDolarDates: api_prefix+'currencies/dolar/dates'
 
 };

@@ -1,6 +1,7 @@
 import {endpoints} from "../config/endpoints.js";
-export const getDolarValues = async () => {
-    return fetch(endpoints.getValues,{
+
+export const getDolarValues = async (desde, hasta) => {
+    return fetch(endpoints.getDolarValues+`?fecha_desde=${desde}&fecha_hasta=${hasta}`,{
         method: 'GET'
     }).then((response) =>{
         if(response.ok) return response.json();
