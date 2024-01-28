@@ -1,22 +1,19 @@
-import {Box, Button, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import "./SearchBar.css";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {setSearchDates} from "../../features/dateFormatter/dateFormatterSlice.js";
+import {setSearchDate} from "../../features/dateFormatter/dateFormatterSlice.js";
 
 function SearchBar({handleSubmitFechas}){
+
     const fechas = useSelector((state) => state.dateFormatter.data.dates);
     const fechasBusqueda = useSelector((state) => state.dateFormatter.data.search_dates);
     const dispatch = useDispatch();
 
-    //const [desde, setDesde] = useState(fechasBusqueda.desde);
-    //const [hasta, setHasta] = useState(fechasBusqueda.hasta);
-
-
     return (
         <Box sx={{width: '50%', display: 'flex', justifyContent: 'space-between', marginTop: '2rem'}}>
-            <FormControl sx={{width: '30%'}} >
+            <FormControl sx={{width: '30%'}} error={fechasBusqueda.desde>=fechasBusqueda.hasta} >
                 <InputLabel id="label-select-fecha-desde" >Desde</InputLabel>
                 <Select
                     sx={{backgroundColor: 'white', maxHeight: '5rem'}}
@@ -24,7 +21,7 @@ function SearchBar({handleSubmitFechas}){
                     label="Desde"
                     value={fechasBusqueda.desde}
                     //onChange={(e)=> setDesde(e.target.value)}
-                    onChange={(e)=>  dispatch(setSearchDates(e.target.value))}
+                    onChange={(e)=>  dispatch(setSearchDate({desde:e.target.value}))}
                 >
 
                     {
@@ -34,8 +31,9 @@ function SearchBar({handleSubmitFechas}){
                             : null
                     }
                 </Select>
+                {fechasBusqueda.desde>=fechasBusqueda.hasta ? <FormHelperText>Debe ser anterior a la fecha "Hasta"</FormHelperText> : null}
             </FormControl>
-            <FormControl sx={{width: '30%'}} >
+            <FormControl sx={{width: '30%'}} error={fechasBusqueda.desde>=fechasBusqueda.hasta}>
                 <InputLabel id="label-select-fecha-hasta" >Hasta</InputLabel>
                 <Select
                     sx={{backgroundColor: 'white'}}
@@ -43,7 +41,7 @@ function SearchBar({handleSubmitFechas}){
                     label="Hasta"
                     value={fechasBusqueda.hasta}
                     //onChange={(e) => setHasta(e.target.value)}
-                    onChange={(e)=>  dispatch(setSearchDates(e.target.value))}
+                    onChange={(e)=>  dispatch(setSearchDate({hasta: e.target.value}))}
                 >
                     {
                         fechas ? fechas.map((item) => {
@@ -52,8 +50,9 @@ function SearchBar({handleSubmitFechas}){
                             :null
                     }
                 </Select>
+                {fechasBusqueda.desde>=fechasBusqueda.hasta ? <FormHelperText>Debe ser posterior a la fecha "Desde"</FormHelperText> : null}
             </FormControl>
-            <Button variant='contained' onClick={() => handleSubmitFechas(desde,hasta)} >
+            <Button variant='contained' onClick={handleSubmitFechas} >
                 <SearchIcon/>
                 Buscar
             </Button>

@@ -15,10 +15,8 @@ import {
 
 
 function Dashboard(){
-    //const [fechasBusqueda, setFechasBusqueda] = useState({fecha_desde:fecha_desde,fecha_hasta:fecha_hasta});
-    const [fechasBusquedaError, setFechasBusquedaError] = useState(false);
 
-    const fechas = useSelector((state) => state.dateFormatter.data.search_dates);
+    const fechasBusqueda = useSelector((state) => state.dateFormatter.data.search_dates);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -26,30 +24,22 @@ function Dashboard(){
         getValoresDolar();
     },[]);
 
-    const handleSubmitFechas = (desde,hasta) => {
-        const from = new Date(desde);
-        const to = new Date(hasta);
-        if(from>=to){
-            setFechasBusquedaError(true);
-            alert("ERROR FECHAS");
-        }else{
-            alert("FECHAS CORRECTAS");
+    const handleSubmitFechas = () => {
+        const {desde, hasta} = fechasBusqueda;
+        if(desde>=hasta) return;
 
-        }
-        console.log(desde,hasta);
+        getValoresDolar();
     }
 
     const getFechasDolar = async () => {
         const data = await getDolarAvailableDates();
         dispatch(formatter(data));
-        //setFechas(data);
     }
 
     const getValoresDolar = async () =>{
-        const data =  await getDolarValues(fechas.desde, fechas.hasta);
+        const data =  await getDolarValues(fechasBusqueda.desde, fechasBusqueda.hasta);
         dispatch(valuesDateFormatter(data));
         dispatch(validInitialFromToDates());
-        //setValoresDolar(data);
     }
 
     return (

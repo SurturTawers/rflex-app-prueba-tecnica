@@ -53,12 +53,19 @@ export const dateFormatterSlice = createSlice({
            state.data.search_dates.hasta = state.data.table_values[0].fecha;
            state.data.search_dates.hasta_formatted = new Date(state.data.table_values[0].fecha).toLocaleDateString('en-GB');
         },
-        setSearchDates: (state,action) => {
-           console.log(action);
+        setSearchDate: (state,action) => {
+           const {desde,hasta} = action.payload;
+           if(desde) state.data.search_dates.desde = desde;
+           if(hasta) state.data.search_dates.hasta = hasta;
         }
     }
 });
 
-export const {formatter, valuesDateFormatter, validInitialFromToDates, setSearchDates} = dateFormatterSlice.actions;
+export const {
+    formatter,
+    valuesDateFormatter,
+    validInitialFromToDates,
+    setSearchDate
+} = dateFormatterSlice.actions;
 
 export default dateFormatterSlice.reducer;
