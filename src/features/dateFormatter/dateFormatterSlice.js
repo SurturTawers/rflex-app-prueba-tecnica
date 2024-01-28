@@ -57,6 +57,40 @@ export const dateFormatterSlice = createSlice({
            const {desde,hasta} = action.payload;
            if(desde) state.data.search_dates.desde = desde;
            if(hasta) state.data.search_dates.hasta = hasta;
+        },
+        modifyTableCell: (state,action) =>{
+            const {itemId, newValue} = action.payload;
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    table_values: state.data.table_values.map((record) => {
+                        if(record.id !== itemId) return record;
+                        return {
+                            ...record,
+                            valor: newValue
+                        }
+                    }),
+                    graph_values: state.data.graph_values.map((record) => {
+                        if(record.id !== itemId) return record;
+                        return {
+                            ...record,
+                            valor: newValue
+                        }
+                    }),
+                }
+            }
+        },
+        deleteTableCell: (state,action) => {
+           const itemId = action.payload;
+           return {
+               ...state,
+               data:{
+                   ...state.data,
+                   table_values: state.data.table_values.filter((record) => record.id !== itemId),
+                   graph_values: state.data.graph_values.filter((record) => record.id !== itemId),
+               }
+           };
         }
     }
 });
@@ -65,7 +99,9 @@ export const {
     formatter,
     valuesDateFormatter,
     validInitialFromToDates,
-    setSearchDate
+    setSearchDate,
+    modifyTableCell,
+    deleteTableCell
 } = dateFormatterSlice.actions;
 
 export default dateFormatterSlice.reducer;
