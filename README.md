@@ -1,6 +1,7 @@
 # rFlex.io-Fluctuación del dólar APP
 ```shell
-git clone https/github.com/SurturTawers app
+git clone https://github.com/SurturTawers/rflex-app-prueba-tecnica.git app
+cd app && cp .env.example .env
 ```
 ## Tecnologías
 * Node 20.9.0
@@ -17,6 +18,9 @@ npm run dev
 * http://localhost:5173
 
 ## Implementación
+
+![Interfaz gráfica](./Screenshot%20from%202024-01-29%2013-39-41.png   "Intefaz Gráfica")
+
 * Se ha optado por utilizar material UI como design system acorde a lo utilizado en rFlex
 * Se ha optado por utilizar Redux por sobre Context, esto por:
   * La estructura de componentes definida dificulta el uso de context
