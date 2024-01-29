@@ -1,18 +1,21 @@
 import {
-    Box, Button, Grow, IconButton,
+    Box, Button, Container, Grow, IconButton,
     Paper, Snackbar,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
-    TableRow, TextField,
+    TableRow, TextField, Typography,
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {Fragment, useState} from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import {deleteTableCell, modifyTableCell} from "../../features/dateFormatter/dateFormatterSlice.js";
+import './DolarTableSnack.css';
+import {Text} from "recharts";
+
 
 function DolarTable(){
     const data = useSelector((state) => state.dateFormatter.data.table_values);
@@ -47,16 +50,49 @@ function DolarTable(){
     }
 
     const handleSnackClose = () => {
-        setOpenSnack(false);
+        snackEditMode ? setSnackEditMode(false) : setOpenSnack(false)
     }
 
+
     const snackButtons = (
-        <Fragment >
-            <Box>
-                <Button variant='contained' onClick={() => setSnackEditMode(true)} >Editar</Button>
-                <Button variant='contained' onClick={handleDeleteRecord} color="error" >Eliminar</Button>
+        <>
+            <Typography variant={'subtitle1'} >{selectedRecord.formatted_date}: {selectedRecord.valor} CLP</Typography>
+            <Button variant='contained' onClick={() => setSnackEditMode(true)} >Editar</Button>
+            <Button variant='contained' onClick={handleDeleteRecord} color="error" >Eliminar</Button>
+        </>
+    );
+
+    const snackEditRecord = (
+        <>
+            <Box sx={{display: 'flex', justifyContent:'space-between', alignItems: 'center', marginBottom: '2rem'}} >
+                <Typography variant={'subtitle1'} >{selectedRecord.formatted_date}:</Typography>
+                <TextField
+                    sx={{width: '5rem', input:{color:'white'} }}
+                    variant='standard'
+                    id="outlined-number"
+                    type="number"
+                    defaultValue={selectedRecord.valor}
+                    onChange={(e) => setNewValor(e.target.value)}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+                <IconButton
+                    size="small"
+                    aria-label="close"
+                    color="inherit"
+                    onClick={handleEditRecord}
+                >
+                    <DoneIcon fontSize="small" />
+                </IconButton>
             </Box>
-            <Box>
+        </>
+    );
+
+    const snackBody = (
+        <Box >
+            <Container sx={{display: 'flex', marginBottom: '0.5rem' }}>
+                <Typography variant={'h6'} >Editar Registro</Typography>
                 <IconButton
                     size="small"
                     aria-label="close"
@@ -65,43 +101,10 @@ function DolarTable(){
                 >
                     <CloseIcon fontSize="small" />
                 </IconButton>
-            </Box>
-        </Fragment>
+            </Container>
+            {snackEditMode ? snackEditRecord : snackButtons }
+        </Box>
     );
-
-    const snackEditRecord = (
-        <Fragment>
-            <TextField
-                sx={{color: 'white'}}
-                variant='standard'
-                id="outlined-number"
-                type="number"
-                defaultValue={selectedRecord.valor}
-                onChange={(e) => setNewValor(e.target.value)}
-                InputLabelProps={{
-                    shrink: true,
-                }}
-            />
-            <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={handleEditRecord}
-            >
-                <DoneIcon fontSize="small" />
-            </IconButton>
-            <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={handleSnackClose}
-            >
-                <CloseIcon fontSize="small" />
-            </IconButton>
-        </Fragment>
-
-    );
-
 
     return (
         <>
@@ -138,14 +141,13 @@ function DolarTable(){
                 </TableContainer>
             </Box>
             <Snackbar
+                sx={{textAlign:'center', marginLeft:0}}
                 anchorOrigin={{vertical:'bottom',horizontal:'right'}}
                 open={openSnack}
                 TransitionComponent={Grow}
-                message={`${selectedRecord.formatted_date}: ${selectedRecord.valor} CLP`}
                 key={'table-snack'}
-                action={snackEditMode ? snackEditRecord : snackButtons}
-            >
-            </Snackbar>
+                action={snackBody}
+            />
         </>
     )
 }
