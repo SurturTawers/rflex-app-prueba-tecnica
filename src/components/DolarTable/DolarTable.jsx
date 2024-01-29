@@ -8,13 +8,14 @@ import {
     TableHead,
     TableRow, TextField, Typography,
 } from "@mui/material";
+import {styled} from '@mui/material/styles';
 import {useDispatch, useSelector} from "react-redux";
 import {Fragment, useState} from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import {deleteTableCell, modifyTableCell} from "../../features/dateFormatter/dateFormatterSlice.js";
 import './DolarTableSnack.css';
-import {Text} from "recharts";
+import '../CustomScrollbar.css';
 
 
 function DolarTable(){
@@ -46,19 +47,23 @@ function DolarTable(){
 
     const handleDeleteRecord = () => {
         dispatch(deleteTableCell(selectedId));
-        setOpenSnack();
+        setOpenSnack(false);
     }
 
     const handleSnackClose = () => {
         snackEditMode ? setSnackEditMode(false) : setOpenSnack(false)
     }
 
+    const CustomTableCell = styled(TableCell)`
+      background-color: rgb(231, 231, 231);
+      text-align: center;
+    `;
 
     const snackButtons = (
         <>
             <Typography variant={'subtitle1'} >{selectedRecord.formatted_date}: {selectedRecord.valor} CLP</Typography>
             <Button variant='contained' onClick={() => setSnackEditMode(true)} >Editar</Button>
-            <Button variant='contained' onClick={handleDeleteRecord} color="error" >Eliminar</Button>
+            <Button sx={{backgroundColor: '#904a96'}} variant='contained' onClick={handleDeleteRecord} color="error" >Eliminar</Button>
         </>
     );
 
@@ -108,13 +113,13 @@ function DolarTable(){
 
     return (
         <>
-            <Box sx={{marginLeft: '2rem', height: 700}}>
-                <TableContainer component={Paper} sx={{maxHeight: 700, overflowX: 'hidden'}}>
+            <Box sx={{marginLeft: '2rem', height: 500}}>
+                <TableContainer component={Paper} sx={{maxHeight: 500, overflowX: 'hidden'}}>
                     <Table stickyHeader sx={{ minWidth: 300}}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Fecha</TableCell>
-                                <TableCell>Valor</TableCell>
+                        <TableHead >
+                            <TableRow >
+                                <CustomTableCell>Fecha</CustomTableCell>
+                                <CustomTableCell>Valor</CustomTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -129,8 +134,8 @@ function DolarTable(){
                                                 tabIndex={-1}
                                                 onClick={(e)=> handleClickSelectItem(e)}
                                             >
-                                                <TableCell>{item.formatted_date}</TableCell>
-                                                <TableCell>{item.valor}</TableCell>
+                                                <TableCell sx={{textAlign: 'center'}} >{item.formatted_date}</TableCell>
+                                                <TableCell sx={{textAlign: 'center'}} >{item.valor}</TableCell>
                                             </TableRow>
                                         )
                                     })
@@ -141,7 +146,7 @@ function DolarTable(){
                 </TableContainer>
             </Box>
             <Snackbar
-                sx={{textAlign:'center', marginLeft:0}}
+                sx={{textAlign:'center'}}
                 anchorOrigin={{vertical:'bottom',horizontal:'right'}}
                 open={openSnack}
                 TransitionComponent={Grow}

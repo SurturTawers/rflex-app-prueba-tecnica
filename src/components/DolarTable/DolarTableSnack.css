@@ -1,4 +1,5 @@
-@media .css-1eqdgzv-MuiPaper-root-MuiSnackbarContent-root {
+.css-1eqdgzv-MuiPaper-root-MuiSnackbarContent-root {
     height: 8rem;
     min-width: 0;
+    background-color: #a4b4dc;
 }

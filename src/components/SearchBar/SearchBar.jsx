@@ -2,7 +2,6 @@ import {Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select} 
 import SearchIcon from '@mui/icons-material/Search';
 import "./SearchBar.css";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect, useState} from "react";
 import {setSearchDate} from "../../features/dateFormatter/dateFormatterSlice.js";
 
 function SearchBar({handleSubmitFechas}){
@@ -52,7 +51,7 @@ function SearchBar({handleSubmitFechas}){
                 </Select>
                 {fechasBusqueda.desde>=fechasBusqueda.hasta ? <FormHelperText>Debe ser posterior a la fecha "Desde"</FormHelperText> : null}
             </FormControl>
-            <Button variant='contained' onClick={handleSubmitFechas} >
+            <Button sx={{backgroundColor: '#67beb3' }} variant='contained' onClick={handleSubmitFechas} >
                 <SearchIcon/>
                 Buscar
             </Button>

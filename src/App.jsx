@@ -4,7 +4,6 @@ import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 
 function App() {
-
   return (
       <>
           <Header/>

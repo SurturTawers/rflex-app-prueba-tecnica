@@ -3,7 +3,7 @@ import DolarTable from "../DolarTable/DolarTable.jsx";
 import {Container} from "@mui/material";
 import SearchBar from "../SearchBar/SearchBar.jsx";
 import './Dashboard.css';
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {getDolarValues} from "../../services/getDolarValues.js";
 import {getDolarAvailableDates} from "../../services/getDolarAvailableDates.js";
 import {useDispatch, useSelector} from "react-redux";
