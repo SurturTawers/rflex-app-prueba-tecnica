@@ -8,7 +8,7 @@ function App() {
       <>
           <Header/>
           <Dashboard/>
-          {/*<Footer/>*/}
+          <Footer/>
       </>
   );
 }
